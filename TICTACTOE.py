@@ -351,6 +351,8 @@ class superT3board(T3board):
     def __init__(self) -> None:
         # init sub boards - each is a tttboard
         self.sub = [T3board() for _ in range(9)]
+        for k in range(9):
+            self.sub[k].move_validation = {'player': False, 'occupation': True}
         self.reset()
     
     def validateMove(self,move):
@@ -712,6 +714,8 @@ class T3agent:
             return Move(self.board.turn, square)
         
     def get_move_engine(self,*a,**k):
+        if self.issuper:
+            print('Thinking...')
         evalulation, enginemove = self.engine.Search(*a,**k)
         return enginemove
         
@@ -747,8 +751,9 @@ def T3match(player1, player2, board=None, engine=None, pause: bool = False):
             if pause:
                 board.show()
                 input()
-    except KeyboardInterrupt:
-        pass
+    except KeyboardInterrupt as err:
+        raise err
+        #pass
 
     board.show()
     board.fanfare()
@@ -775,4 +780,5 @@ def testSuperT3poscnt():
 if __name__ == '__main__':
     
     board = superT3board()
-    testT3match(board)
+    T3match('human','human',board=board,pause=False)
+    #testT3match(board)
