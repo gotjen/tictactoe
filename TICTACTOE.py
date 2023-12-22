@@ -721,14 +721,15 @@ class T3agent:
         elif self.agenttype == 'human':
             return self.get_move_human()
         elif self.agenttype == 'engine':
-            return self.get_move_engine(*a,**k)
+            return self.get_move_engine(*a, **k)
      
-def T3match(player1,player2, board=None,engine=None,pause:bool=False):
+
+def T3match(player1, player2, board=None, engine=None, pause: bool = False):
     if board is None:
         board = T3board()
     if engine is None and 'engine' in [player1, player2]:
         engine = T3engine(board)
-    
+
     agents = {X: T3agent(player1, side=X, board=board, engine=engine),
               O: T3agent(player2, side=O, board=board, engine=engine)}
     try:
@@ -748,13 +749,13 @@ def T3match(player1,player2, board=None,engine=None,pause:bool=False):
                 input()
     except KeyboardInterrupt:
         pass
-    
+
     board.show()
-    board.fanfare()   
+    board.fanfare()
     return board, engine, agents
 
-def testT3match():
-    return  T3match('human','engine',board = board,pause=True)
+def testT3match(board):
+    return  T3match('human','engine',board=board,pause=True)
 
 def testSuperT3poscnt():
     board = superT3board()
@@ -774,3 +775,4 @@ def testSuperT3poscnt():
 if __name__ == '__main__':
     
     board = superT3board()
+    testT3match(board)
