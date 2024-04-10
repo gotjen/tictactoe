@@ -722,12 +722,11 @@ class T3agent:
         return enginemove
         
     def get_move(self, *a,**k):
-        if self.agenttype == 'random':
-            return self.get_move_random()
-        elif self.agenttype == 'human':
-            return self.get_move_human()
-        elif self.agenttype == 'engine':
-            return self.get_move_engine(*a, **k)
+        match self.agent_type:
+            case "random":  return self.get_move_random()
+            case "human":   return self.get_move_human()
+            case "engine":  return self.get_move_engine(*a, **k)
+            case _: ValueError(f'Agent type has illegal value: {self.agent_type}')
      
 
 def T3match(player1, player2, board=None, engine=None, pause: bool = False):
