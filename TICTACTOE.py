@@ -522,14 +522,14 @@ class T3engine:
         self.board = board
         self.reusecnt = 0
 
-    def Search(self, debug: bool = False):
+    def Search(self, depth = 9):
         if self.board.terminated():
             engineMove = None
             return EvalLookup[self.board.outcome.Player], []
         # elif self.board.BB_OCC == 0:
         #     return 0,Move(self.board.turn, 0)
         
-        Evaluation, engineMove = self._search(debug=debug)
+        Evaluation, engineMove = self._search(depth=depth)
         return (Evaluation, engineMove)
 
     def _search(self, depth: int = 0, debug: bool = False):
@@ -537,17 +537,15 @@ class T3engine:
         if state in self.mem:
             self.reusecnt += 1
             return self.mem[state]
-        elif self.board.terminated():
+        elif self.board.terminated() or depth<=0:
+            
             Evaluation = 1000*self.board.outcome.Outcome / depth
-            if debug and False:
-                self.board.show()
-                print(' '*depth, self.board.move_stack[-1], f'Eval: {Evaluation}')
-            return Evaluation,None
+            return self.board.Evaluation, None
 
         BEST = None
         for move in self.board.GenerateLegalMoves():
             self.board.push(move)
-            lasteval = self._search(depth=depth+1, debug=debug) 
+            lasteval = self._search(depth=depth-1, debug=debug) 
             self.board.pop()
             if BEST is None or\
                 (self.board.turn and lasteval[0] > BEST[0]) or \
