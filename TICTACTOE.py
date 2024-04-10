@@ -515,7 +515,7 @@ class superT3board(T3board):
 
 class T3engine:
     '''Peaks ahead in a ttt game'''
-    board: T3board = None
+    board = None
     mem: Dict = {}
     
     def __init__(self, board: T3board = T3board()) -> None:
