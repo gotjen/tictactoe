@@ -238,10 +238,14 @@ class T3board:
         Xhaswin = False
         Ohaswin = False
         for BB_WIN in BB_WINS:
-            if not Xhaswin: Xhaswin = checkOverlap(self.BB_O, BB_WIN,'any')
-            if not Ohaswin: Ohaswin = checkOverlap(self.BB_X, BB_WIN,'any')
+            if not Xhaswin: Xhaswin = checkOverlap(self.BB_X, BB_WIN,'any')
+            if not Ohaswin: Ohaswin = checkOverlap(self.BB_O, BB_WIN,'any')
             if Xhaswin and Ohaswin: break
         return (Xhaswin,Ohaswin)
+    
+    def wintracks(self):
+        return {X: [BB_WIN for BB_WIN in BB_WINS if checkOverlap(self.BB_X,BB_WIN,'any')],
+                O: [BB_WIN for BB_WIN in BB_WINS if checkOverlap(self.BB_O,BB_WIN,'any')]}
 
     def updateOutcome(self) -> None:
         ''' Test for game terminating outcome '''
